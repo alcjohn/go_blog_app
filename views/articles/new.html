@@ -1,8 +1,52 @@
 {{ define "content" }}
 <h1>Articles</h1>
-<x-form action="/articles" method="POST">
-  <input type="text" name="title" id="title" placeholder="Title" />
-  <textarea name="content" id="content" cols="30" rows="10"></textarea>
-  <input type="submit" value="Create" />
-</x-form>
+<form method="POST">
+  <div class="form-group">
+    <label class="label" for="title">Title</label>
+    <input
+      class="input {{if .errors.title}} error {{end}}"
+      type="text"
+      name="title"
+      id="title"
+      placeholder="title"
+      value="{{if .input.Title}} {{.input.Title}} {{end}}"
+    />
+    {{if .errors.title}}
+    <p class="input-error">{{.errors.title}}</p>
+    {{end}}
+  </div>
+  <div class="form-group">
+    <label class="label" for="description">Description</label>
+    <input
+      class="input {{if .errors.description}} error {{end}}"
+      type="text"
+      name="description"
+      id="description"
+      placeholder="Description"
+      value="{{if .input.Description}} {{.input.Description}} {{end}}"
+    />
+    {{if .errors.description}}
+    <p class="input-error">{{.errors.description}}</p>
+    {{end}}
+  </div>
+  <div class="form-group">
+    <label class="label" for="content">Content</label>
+    <input
+      class="input {{if .errors.content}} error {{end}}"
+      type="text"
+      name="content"
+      id="content"
+      placeholder="Content"
+      value="{{if .input.Content}} {{.input.Content}} {{end}}"
+    />
+    {{if .errors.content}}
+    <p class="input-error">{{.errors.content}}</p>
+    {{end}}
+  </div>
+  <input
+    class="whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-green-500 hover:bg-green-600"
+    type="submit"
+    value="Create"
+  />
+</form>
 {{end}}

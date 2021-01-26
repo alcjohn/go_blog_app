@@ -15,13 +15,15 @@ func initializeRoutes() {
 
 	r.GET("/", blogController.Index)
 	me := r.Group("/me", middlewares.MustBeAuth())
-	articles := me.Group("/articles")
-	articlesController.InitRoutes(articles)
-	me.GET("/", meController.Index)
+	{
+		me.GET("/", meController.Index)
+		articles := me.Group("/articles")
+		articlesController.InitRoutes(articles)
+	}
 	r.GET("/signin", authController.SignIn)
 	r.GET("/signup", authController.SignUp)
 	r.POST("/signin", authController.Login)
 	r.POST("/signup", authController.Register)
-	r.GET("/logout", authController.Logout)
+	r.POST("/logout", authController.Logout)
 
 }

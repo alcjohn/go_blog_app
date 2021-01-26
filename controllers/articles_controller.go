@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/alcjohn/go_fullstack/utils"
 
@@ -13,8 +13,9 @@ import (
 )
 
 type CreateInput struct {
-	Title   string `form:"title" json:"title" binding:"required"`
-	Content string `form:"content" json:"content" binding:"required"`
+	Title       string `form:"title" json:"title" binding:"required"`
+	Content     string `form:"content" json:"content" binding:"required"`
+	Description string `form:"description" json:"description" binding:"required"`
 }
 type ArticlesController struct{}
 
@@ -23,17 +24,15 @@ func (controller ArticlesController) InitRoutes(r *gin.RouterGroup) {
 	r.GET("/show/:article_id", controller.Show)
 	r.GET("/new", controller.New)
 	r.GET("/edit/:article_id", controller.Edit)
-
-	r.POST("/", controller.Create)
-	r.PUT("/:article_id", controller.Update)
-	r.PATCH("/:article_id", controller.Update)
-	r.DELETE("/:article_id", controller.Destroy)
+	r.POST("/new", controller.Create)
+	r.POST("/edit/:article_id", controller.Update)
+	r.POST("/delete/:article_id", controller.Destroy)
 }
 
 func (controller ArticlesController) Index(c *gin.Context) {
 	var articles []models.Article
-	config.DB.Find(&articles)
-	fmt.Println(articles)
+	user := c.MustGet("user").(models.User)
+	config.DB.Where("user_id = ?", user.ID).Find(&articles)
 	utils.Render(c, http.StatusOK, "articles/index", gin.H{
 		"title":    "Liste des Articles",
 		"articles": articles,
@@ -57,16 +56,25 @@ func (controller ArticlesController) Edit(c *gin.Context) {}
 
 func (controller ArticlesController) Create(c *gin.Context) {
 	var input CreateInput
+	user := c.MustGet("user").(models.User)
 	if err := c.ShouldBind(&input); err != nil {
-		c.Redirect(http.StatusBadRequest, "articles/new")
+		utils.Render(c, http.StatusBadRequest, "articles/new", gin.H{
+			"title":  "Créer un Article",
+			"errors": err,
+			"input":  input,
+		})
 	}
 	article := models.Article{
-		Title:   input.Title,
-		Content: input.Content,
+		Title:       input.Title,
+		Description: input.Description,
+		Content:     input.Content,
+		User:        user,
+		PublishedAt: time.Now(),
+		IsPublished: true,
 	}
 	config.DB.Create(&article)
 
-	c.Redirect(http.StatusFound, "/articles")
+	c.Redirect(http.StatusFound, "/me/articles")
 }
 func (controller ArticlesController) Update(c *gin.Context) {}
 func (controller ArticlesController) Destroy(c *gin.Context) {
