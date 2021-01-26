@@ -1,0 +1,6 @@
+{{ define "content" }}
+<h1>{{.article.Title}}</h1>
+<p>{{.article.Content}}</p>
+<x-btn-delete url="/articles/delete/{{.article.ID}}"></x-btndelete>
+
+{{end}}

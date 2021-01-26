@@ -1,0 +1,8 @@
+{{ define "content" }}
+<h1>Articles</h1>
+<x-form action="/articles" method="POST">
+  <input type="text" name="title" id="title" placeholder="Title" />
+  <textarea name="content" id="content" cols="30" rows="10"></textarea>
+  <input type="submit" value="Create" />
+</x-form>
+{{end}}

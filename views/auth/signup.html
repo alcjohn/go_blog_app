@@ -1,0 +1,68 @@
+{{ define "content" }}
+<form method="POST" class="h-full flex justify-center flex-col">
+  <h1 class="text-2xl mb-6 text-green-500 font-bold">Inscrit-toi !</h1>
+  <div class="form-group">
+    <label class="label" for="firstname">Prénom</label>
+    <input
+      class="input {{if .errors.firstname}} error {{end}}"
+      type="text"
+      name="firstname"
+      id="firstname"
+      placeholder="Ton Prénom"
+      value="{{if .input.Firstname}} {{.input.Firstname}} {{end}}"
+    />
+    {{if .errors.firstname}}
+    <p class="input-error">{{.errors.firstname}}</p>
+    {{end}}
+  </div>
+  <div class="form-group">
+    <label class="label" for="lastname">Nom</label>
+    <input
+      class="input {{if .errors.lastname}} error {{end}}"
+      type="text"
+      name="lastname"
+      id="lastname"
+      placeholder="Ton Nom"
+      value="{{if .input.Lastname}}{{.input.Lastname}}{{end}}"
+    />
+    {{if .errors.lastname}}
+    <p class="input-error">{{.errors.lastname}}</p>
+    {{end}}
+  </div>
+  <div class="form-group">
+    <label class="label" for="email">Email</label>
+    <input
+      class="input {{if .errors.email}} error {{end}}"
+      type="text"
+      name="email"
+      id="email"
+      placeholder="Email"
+      value="{{if .input.Email}} {{.input.Email}} {{end}}"
+    />
+    {{if .errors.email}}
+    <p class="input-error">{{.errors.email}}</p>
+    {{end}}
+  </div>
+  <div class="form-group">
+    <label class="label" for="password">Mot de passe</label>
+    <input
+      class="input {{if .errors.password}} error {{end}}"
+      type="password"
+      name="password"
+      id="password"
+      placeholder="Mot de passe"
+      value="{{if .input.Password}} {{.input.Password}} {{end}}"
+    />
+    {{if .errors.email}}
+    <p class="input-error">{{.errors.email}}</p>
+    {{end}}
+  </div>
+  <div class="flex justify-start">
+    <input
+      class="whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-green-500 hover:bg-green-600"
+      type="submit"
+      value="S'inscrire"
+    />
+  </div>
+</form>
+{{ end }}

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {{ if .title }} {{.title}} | Blog App {{else }} Blog App {{end}}
+    </title>
+    {{ script "app" }} {{ link "app" }} {{ vitejs }}
+  </head>
+  <body>
+    <div class="flex flex-col h-full">
+      {{include "layouts/header" }}
+      <div class="container mx-auto flex-1">{{template "content" .}}</div>
+    </div>
+  </body>
+</html>

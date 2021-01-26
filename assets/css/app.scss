@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+html,
+body {
+  height: 100vh;
+}
+.form-group {
+  @apply mb-6 w-full;
+  .label {
+    @apply block text-gray-600 text-sm font-bold mb-2;
+  }
+  .input {
+    @apply shadow appearance-none border  rounded w-full py-2 px-3 mb-3;
+    &.error {
+      @apply border-red-500;
+    }
+  }
+  .input-error {
+    @apply text-red-500 text-xs italic;
+  }
+}
+
+.btn-primary {
+}

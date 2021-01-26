@@ -1,0 +1,15 @@
+{
+  "app.js": {
+    "isEntry": true,
+    "isDynamicEntry": false,
+    "file": "app.f3124ce7.js",
+    "imports": [
+      "vendor.0ee6cbd7.js"
+    ],
+    "dynamicImports": [],
+    "facadeModuleId": "app.ts"
+  },
+  "app.css": {
+    "file": "app.7438944c.css"
+  }
+}
