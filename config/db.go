@@ -10,8 +10,6 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-var DB *gorm.DB
-
 type DBConfig struct {
 	Host     string
 	Port     string
@@ -28,7 +26,7 @@ func autoMigrate(db *gorm.DB) {
 	)
 }
 
-func ConnectDB() {
+func ConnectDB() *gorm.DB {
 	dbConfig := DBConfig{
 		Host:     os.Getenv("DB_HOST"),
 		Port:     os.Getenv("DB_PORT"),
@@ -55,6 +53,5 @@ func ConnectDB() {
 		panic(err)
 	}
 	autoMigrate(database)
-
-	DB = database
+	return database
 }

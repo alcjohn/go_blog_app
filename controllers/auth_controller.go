@@ -4,18 +4,18 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/alcjohn/go_fullstack/global"
 	"github.com/alcjohn/go_fullstack/utils"
 
-	"github.com/alcjohn/go_fullstack/config"
 	"github.com/alcjohn/go_fullstack/models"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 	"golang.org/x/crypto/bcrypt"
 )
 
 // Auth Controller
-type AuthController struct{}
+type AuthController struct {
+}
 
 func (controller AuthController) SignIn(c *gin.Context) {
 	utils.Render(c, http.StatusOK, "auth/signin", gin.H{
@@ -42,6 +42,9 @@ type RegisterForm struct {
 	Password  string `form:"password" binding:"required"`
 }
 
+func NewAuthController() *AuthController {
+	return &AuthController{}
+}
 func loginError(c *gin.Context) {
 
 	utils.Render(c, http.StatusBadRequest, "auth/signin", gin.H{
@@ -63,7 +66,7 @@ func (controller AuthController) Login(c *gin.Context) {
 		return
 	}
 	var user models.User
-	if err := config.DB.Where("email = ?", input.Email).First(&user).Error; err != nil {
+	if err := global.DB.Where("email = ?", input.Email).First(&user).Error; err != nil {
 		fmt.Println(err)
 		loginError(c)
 		return
@@ -78,10 +81,10 @@ func (controller AuthController) Register(c *gin.Context) {
 	var input RegisterForm
 	if e := c.ShouldBind(&input); e != nil {
 		errors := map[string]string{}
-		for _, err := range e.(validator.ValidationErrors) {
+		// for _, err := range e.(validator.ValidationErrors) {
 
-			errors[err.Field()] = err.Translate(config.Trans)
-		}
+		// 	errors[err.Field()] = err.Translate(controller.Trans)
+		// }
 		fmt.Println(errors)
 		utils.Render(c, http.StatusBadRequest, "auth/signup", gin.H{
 			"title":  "S'inscrire",
@@ -99,7 +102,7 @@ func (controller AuthController) Register(c *gin.Context) {
 		Password:  string(password),
 	}
 
-	err := config.DB.Create(&newUser).Error
+	err := global.DB.Create(&newUser).Error
 	if err != nil {
 		fmt.Println(err)
 		utils.Render(c, http.StatusBadRequest, "auth/signup", gin.H{
@@ -121,5 +124,5 @@ func (controller AuthController) Logout(c *gin.Context) {
 	session := sessions.Default(c)
 	session.Set("user_id", 0)
 	session.Save()
-	c.Redirect(http.StatusPermanentRedirect, "/")
+	c.Redirect(http.StatusFound, "/")
 }

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/alcjohn/go_fullstack/config"
+	"github.com/alcjohn/go_fullstack/global"
 	"github.com/alcjohn/go_fullstack/models"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -19,7 +19,7 @@ func AuthMiddleware() gin.HandlerFunc {
 			return
 		}
 		var user models.User
-		err := config.DB.First(&user, userID).Error
+		err := global.DB.First(&user, userID).Error
 		if err != nil {
 			fmt.Println(err)
 		}
